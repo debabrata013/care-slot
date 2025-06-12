@@ -1,60 +1,25 @@
-import mongoose, { Schema, models, model } from "mongoose";
+import mongoose, { Schema, models, model, Document } from 'mongoose';
+import { IPatient } from './Patient';
+import { IDoctor } from './Doctor';
+import { IAvailableSlot } from './AvailableSlot';
 
-const AppointmentSchema = new Schema(
-  {
-    doctorId: {
-      type: Schema.Types.ObjectId,
-      ref: "User", // Assuming doctor bhi User schema me hai with role: 'doctor'
-      required: true,
-    },
-    userId: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    timeSlot: {
-      type: Date,
-      required: true,
-    },
-    status: {
-      type: String,
-      enum: ["pending", "confirmed", "cancelled", "completed"],
-      default: "pending",
-    },
-    notes: {
-      type: String,
-      default: "",
-    },
-    symptoms: {
-      type: [String], // Example: ["fever", "cough"]
-      default: [],
-    },
-    mode: {
-      type: String,
-      enum: ["offline", "online"],
-      default: "offline",
-    },
-    meetingLink: {
-      type: String,
-      default: "", // if online
-    },
-    clinicAddress: {
-      type: String,
-      default: "", // optional
-    },
-  },
-  {
-    timestamps: true, // adds createdAt and updatedAt
-  }
-);
+export interface IAppointment extends Document {
+  patientId: IPatient['_id'];
+  doctorId: IDoctor['_id'];
+  slotId: IAvailableSlot['_id'];
+  status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-// Indexing for performance
-AppointmentSchema.index({ doctorId: 1, timeSlot: 1 }, { unique: true });
+const AppointmentSchema = new Schema<IAppointment>({
+  patientId: { type: Schema.Types.ObjectId, ref: 'Patient', required: true },
+  doctorId: { type: Schema.Types.ObjectId, ref: 'Doctor', required: true },
+  slotId: { type: Schema.Types.ObjectId, ref: 'AvailableSlot', required: true, unique: true },
+  status: { type: String, enum: ['pending', 'confirmed', 'cancelled', 'completed'], default: 'pending' },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
 
-const Appointment =
-  models.Appointment || model("Appointment", AppointmentSchema);
-
+const Appointment = models.Appointment || model<IAppointment>('Appointment', AppointmentSchema);
 export default Appointment;
-
-  
-  
