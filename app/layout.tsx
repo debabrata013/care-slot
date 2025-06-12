@@ -1,3 +1,4 @@
+
 import { type Metadata } from 'next'
 import {
   ClerkProvider,
@@ -7,6 +8,7 @@ import {
   SignedOut,
   UserButton,
 } from '@clerk/nextjs'
+
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 
@@ -36,18 +38,15 @@ export default function RootLayout({
       <html >
         <body className={`${geistSans.variable} ${geistMono.variable} `}>
           <header className="flex justify-end items-center p-4 gap-4 h-16">
-             
-<SignedOut>
-  <SignInButton redirectUrl="/dashboard">
+  <SignedOut>
+  <SignInButton forceRedirectUrl="/dashboard">
     <button className="bg-blue-500 text-white px-4 py-2 rounded">Sign In</button>
   </SignInButton>
-  <SignUpButton redirectUrl="/dashboard">
+  <SignUpButton forceRedirectUrl="/dashboard">
     <button className="bg-green-500 text-white px-4 py-2 rounded">Sign Up</button>
   </SignUpButton>
 </SignedOut>
-        <SignedIn>
-          <UserButton afterSignOutUrl="/" />
-        </SignedIn>
+
           </header>
           {children}
         </body>
