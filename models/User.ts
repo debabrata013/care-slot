@@ -1,10 +1,24 @@
-import mongoose, { Schema, models } from "mongoose";
-const UserSchema = new Schema({
-    clerkId: { type: String, required: true, unique: true },
-    name: String,
-    role: { type: String, enum: ['doctor', 'user'], required: true },
-  });
-  
-  
-const User = models.User || mongoose.model("User", UserSchema);
+import mongoose, { Schema, models, model, Document } from 'mongoose';
+
+export interface IUser extends Document {
+  clerkId: string;
+  name: string;
+  email: string;
+  role: 'doctor' | 'patient';
+  image?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const UserSchema = new Schema<IUser>({
+  clerkId: { type: String, required: true, unique: true },
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  role: { type: String, enum: ['doctor', 'patient'], required: true },
+  image: String,
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
+
+const User = models.User || model<IUser>('User', UserSchema);
 export default User;
