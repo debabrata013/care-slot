@@ -9,6 +9,7 @@ import {
   X,
   Menu,
 } from "lucide-react";
+import DoctorSidebar from "@/components/Dsidebar";
 
 const DashboardPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -18,45 +19,16 @@ const DashboardPage = () => {
     { id: 2, date: "2025-06-11", time: "02:00 PM", patient: "Jane Smith" },
   ]);
 
-  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+ 
 
   return (
     <div className="flex min-h-screen bg-gray-900">
       {/* Sidebar */}
-      {sidebarOpen && (
-        <aside className="w-64 bg-gray-800 text-white flex flex-col transition-all duration-300">
-          <div className="p-6 border-b border-gray-700 flex items-center justify-between">
-            <h2 className="text-2xl font-bold">Dashboard</h2>
-            <button onClick={toggleSidebar}>
-              <X size={20} />
-            </button>
-          </div>
-          <nav className="flex-1 p-4">
-            <ul className="space-y-4">
-              <li>
-                <a href="#" className="block text-gray-300 hover:text-white">
-                  Home
-                </a>
-              </li>
-              <li>
-                <a href="#" className="block text-gray-300 hover:text-white">
-                  Schedule
-                </a>
-              </li>
-              <li>
-                <a href="#" className="block text-gray-300 hover:text-white">
-                  Appointments
-                </a>
-              </li>
-              <li>
-                <a href="#" className="block text-gray-300 hover:text-white">
-                  Settings
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </aside>
-      )}
+      
+       <DoctorSidebar
+          
+        />
+      
 
       {/* Main Content */}
       <main className="flex-1 p-6">
@@ -66,14 +38,7 @@ const DashboardPage = () => {
             <h1 className="text-3xl font-bold text-white mb-1">Welcome, Dr.</h1>
             <p className="text-gray-300">Manage your schedule and appointments</p>
           </div>
-          {!sidebarOpen && (
-            <button
-              onClick={toggleSidebar}
-              className="bg-gray-700 text-white p-2 rounded-lg"
-            >
-              <Menu size={20} />
-            </button>
-          )}
+          
         </div>
 
         {/* Manage Schedule */}
